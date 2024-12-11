@@ -1,11 +1,12 @@
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vote on Polls</title>
-
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -48,7 +49,7 @@
         }
         .poll-option input {
             margin-right: 10px;
-            accent-color: #007bff; /* Custom color for radio buttons (modern browsers) */
+            accent-color: #007bff;
         }
         button {
             margin-top: 15px;
@@ -83,7 +84,6 @@
     <div class="footer">Your voice matters!</div>
 
     <script>
-        //    localStorage.clear();
         // Function to load and display polls
         function loadPolls() {
             const polls = JSON.parse(localStorage.getItem("polls") || "[]");
@@ -123,51 +123,25 @@
 
         // Function to handle voting
         function votePoll(pollIndex) {
-    const polls = JSON.parse(localStorage.getItem("polls") || "[]");
-    const selectedOption = document.querySelector(`input[name="poll-${pollIndex}"]:checked`);
+            const polls = JSON.parse(localStorage.getItem("polls") || "[]");
+            const selectedOption = document.querySelector(`input[name="poll-${pollIndex}"]:checked`);
 
-    if (!selectedOption) {
-        alert("Please select an option to vote!");
-        return;
-    }
+            if (!selectedOption) {
+                alert("Please select an option to vote!");
+                return;
+            }
 
-    const selectedOptionIndex = parseInt(selectedOption.value);
-    console.log("Polls:", polls);
-    console.log("Poll Index:", pollIndex);
-    console.log("Selected Option Index:", selectedOptionIndex);
+            const selectedOptionIndex = parseInt(selectedOption.value);
 
-    // Ensure the selected option index is valid
-    if (pollIndex < polls.length && selectedOptionIndex < polls[pollIndex].votes.length) {
-        polls[pollIndex].votes[selectedOptionIndex] += 1; // Increment the vote count for the selected option
+            // Increment the vote count for the selected option
+            polls[pollIndex].votes[selectedOptionIndex] += 1;
 
-        // Save updated polls back to localStorage
-        localStorage.setItem("polls", JSON.stringify(polls));
+            // Save updated polls back to localStorage
+            localStorage.setItem("polls", JSON.stringify(polls));
 
-        alert("Thank you for voting!");
-        loadPolls(); // Refresh polls to show updated vote counts
-    } else {
-        alert("Invalid vote. Please try again.");
-    }
-}
-
-function submitVote() {
-    const polls = JSON.parse(localStorage.getItem("polls") || "[]");
-    let selectedOptionIndex = -1;
-
-    for (let i = 0; i < polls.length; i++) {
-        const selectedOption = document.querySelector(`input[name="poll${i}"]:checked`);
-        if (selectedOption) {
-            selectedOptionIndex = selectedOption.value; // Get selected option index
-            polls[i].votes[selectedOptionIndex]++; // Increment vote count for the selected option
+            alert("Thank you for voting!");
+            loadPolls(); // Refresh polls to show updated vote counts
         }
-    }
-
-    localStorage.setItem("polls", JSON.stringify(polls));
-    alert("Thank you for voting!"); // Optional alert
-    window.location.href = "results.html"; // Redirect to results page
-}
-
-
 
         // Load polls when the page is loaded
         window.onload = loadPolls;
